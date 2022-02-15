@@ -1,3 +1,3 @@
 module.exports = {
-  mongoURI: "mongodb://localhost:27017/survery",
+  mongoURI: "mongodb://localhost:27017/salechampnl",
 };

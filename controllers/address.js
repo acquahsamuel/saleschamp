@@ -1,43 +1,39 @@
 // const User = require('../models/User');
-const Category = require('../models/Category');
-const ErrorResponse = require('../utils/errorResponse');
-const asyncHandler = require('../middleware/async');
+const Address = require("../models/Address");
+const ErrorResponse = require("../utils/errorResponse");
+const asyncHandler = require("../middleware/async");
 
 // @desc      Get all categories
 // @route     GET /api/v1/categories
 // @access    Private/Admin
-exports.getCategories = asyncHandler(async (req, res, next) => {
+exports.getAllAddress = asyncHandler(async (req, res, next) => {
   // res.status(200).json(res.advancedResults);
-  const category = await Category.find();
+  const address = await Address.find();
   res.status(200).json({
     success: true,
-    data: category
-  })
+    data: address
+  });
 });
-
 
 // @desc      Create category
 // @route     GET /api/v1/categories
 // @access    Private/Admin
-exports.createCategory = asyncHandler(async (req, res, next) => {
-  const category = await Category.create(req.body);
+exports.createAddress = asyncHandler(async (req, res, next) => {
+  const address = await Address.create(req.body);
 
   res.status(201).json({
     success: true,
-    data: category
+    data: address
   });
 });
-
-
-
 
 // @desc      Get single user
 // @route     GET /api/v1/categories
 // @access    Private/Admin
-exports.getCategory = asyncHandler(async (req, res, next) => {
-  const category = await Category.findById(req.params.id);
+exports.getAddress = asyncHandler(async (req, res, next) => {
+  const address = await Address.findById(req.params.id);
 
-  if (!category) {
+  if (!address) {
     return next(
       new ErrorResponse(`Category not found with id of ${req.params.id}`, 404)
     );
@@ -45,22 +41,20 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: category
+    data: address
   });
 });
-
-
 
 // @desc      Update user
 // @route     PATCH /api/v1/categories/:id
 // @access    Private/Admin
-exports.updateCategory = asyncHandler(async (req, res, next) => {
-  const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
+exports.updateAddress = asyncHandler(async (req, res, next) => {
+  const address = await Address.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
   });
 
-  if (!category) {
+  if (!address) {
     return next(
       new ErrorResponse(`Category not found with id of ${req.params.id}`, 404)
     );
@@ -68,17 +62,17 @@ exports.updateCategory = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: category
+    data: address
   });
 });
 
 // @desc      Delete user
 // @route     DELETE  /api/v1/categories/:id
 // @access    Private/Admin
-exports.deleteCategory = asyncHandler(async (req, res, next) => {
-  const category = await Category.findByIdAndDelete(req.params.id);
+exports.deleteAddress = asyncHandler(async (req, res, next) => {
+  const address = await Address.findByIdAndDelete(req.params.id);
 
-  if (!category) {
+  if (!address) {
     return next(
       new ErrorResponse(`Category not found with id of ${req.params.id}`, 404)
     );

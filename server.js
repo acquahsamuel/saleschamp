@@ -1,5 +1,3 @@
-const path = require("path");
-const ejs = require("ejs");
 const hpp = require("hpp");
 const cors = require("cors");
 const colors = require("colors");
@@ -20,15 +18,11 @@ mongoose.connect(keys.mongoURI, {
   // createInd
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
+  useCreateIndex: true
 });
 
 // Route files in
-const auth = require("./routes/auth");
-const user = require("./routes/users");
-const article = require("./routes/articles");
-const comments = require("./routes/comments");
-const category = require("./routes/categories");
+const address = require("./routes/address");
 
 const app = express();
 
@@ -58,7 +52,7 @@ app.use(xss());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 mins
-  max: 100,
+  max: 100
 });
 app.use(limiter);
 
@@ -69,18 +63,14 @@ app.use(hpp());
 app.use(cors());
 
 // Mount routers
-app.use("/api/v1/auth", auth);
-app.use("/api/v1/users", user);
-app.use("/api/v1/articles", article);
-app.use("/api/v1/comments", comments);
-app.use("/api/v1/categories", category);
+app.use("/api/v1/address", address);
 
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
   PORT,
-  console.log(`Server running on port ${PORT}`.yellow.bold)
+  console.log(`Server running on port ${PORT}`.yellow.underline)
 );
 
 // Handle unhandled promise rejections
