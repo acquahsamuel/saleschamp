@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
 
-const ArticleSchema = new mongoose.Schema({
+const AddressSchema = new mongoose.Schema({
   country: {
     type: String,
     required: [true, "Please add a country"]
@@ -58,4 +58,4 @@ const ArticleSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("Article", ArticleSchema);
+module.exports = mongoose.model("Address", AddressSchema);

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const countries = require("i18n-iso-countries");
-
-console.log(countries);
+// const countries = require("i18n-iso-countries");
+// console.log(countries);
 
 const AddressSchema = new mongoose.Schema({
   country: {

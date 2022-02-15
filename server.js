@@ -9,11 +9,18 @@ const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
 const errorHandler = require("./middleware/error");
 const mongoSanitize = require("express-mongo-sanitize");
-const connectDB = require("./config/db");
+const mongoose = require("mongoose");
+// const connectDB = require("./config/db");
 const keys = require("./config/keys");
 
 //Database connection
-connectDB();
+// connectDB();
+
+mongoose.connect(keys.MONGO_URI, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true
+});
 
 // Route files in
 const address = require("./routes/address");
@@ -59,7 +66,10 @@ app.use("/api/v1/address", address);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, console.log(`Server running on port ${PORT}`));
+const server = app.listen(
+  PORT,
+  console.log(`Server running on port ${PORT}`.yellow.underline)
+);
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
