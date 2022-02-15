@@ -10,7 +10,6 @@ const rateLimit = require("express-rate-limit");
 const errorHandler = require("./middleware/error");
 const mongoSanitize = require("express-mongo-sanitize");
 const mongoose = require("mongoose");
-// const connectDB = require("./config/db");
 const keys = require("./config/keys");
 
 //Database connection
