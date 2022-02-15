@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const countries = require("i18n-iso-countries");
+
+console.log(countries);
 
 const AddressSchema = new mongoose.Schema({
   country: {
@@ -48,7 +51,7 @@ const AddressSchema = new mongoose.Schema({
   status: {
     type: String,
     default: null,
-    trim: true,
+    trim: true
     // enum: {
     //   values: ["not at home", "not interested", "interested"],
     //   message: "Status must be  [not at home] [not interested] [ interested]"

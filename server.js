@@ -7,19 +7,13 @@ const xss = require("xss-clean");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
-const fileupload = require("express-fileupload");
 const errorHandler = require("./middleware/error");
-const mongoose = require("mongoose");
 const mongoSanitize = require("express-mongo-sanitize");
+const connectDB = require("./config/db");
 const keys = require("./config/keys");
 
-// Load env vars
-mongoose.connect(keys.mongoURI, {
-  // createInd
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true
-});
+//Database connection
+connectDB();
 
 // Route files in
 const address = require("./routes/address");
@@ -36,9 +30,6 @@ app.use(cookieParser());
 if (keys.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-
-// File uploading
-app.use(fileupload());
 
 // Sanitize data
 app.use(mongoSanitize());
@@ -68,10 +59,7 @@ app.use("/api/v1/address", address);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(
-  PORT,
-  console.log(`Server running on port ${PORT}.saleschamp.nl-dev`.yellow.underline)
-);
+const server = app.listen(PORT, console.log(`Server running on port ${PORT}`));
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
