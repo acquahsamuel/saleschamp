@@ -16,8 +16,8 @@ exports.getAllAddress = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Create category
-// @route     GET /api/v1/categories
-// @access    Private/Admin
+// @route     GET /api/v1/address
+// @access    Public
 exports.createAddress = asyncHandler(async (req, res, next) => {
   const address = await Address.create(req.body);
 
@@ -28,8 +28,8 @@ exports.createAddress = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Get single user
-// @route     GET /api/v1/categories
-// @access    Private/Admin
+// @route     GET /api/v1/address
+// @access    Public
 exports.getAddress = asyncHandler(async (req, res, next) => {
   const address = await Address.findById(req.params.id);
 
@@ -46,8 +46,8 @@ exports.getAddress = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Update user
-// @route     PATCH /api/v1/categories/:id
-// @access    Private/Admin
+// @route     PATCH /api/v1/address/:id
+// @access   Public
 exports.updateAddress = asyncHandler(async (req, res, next) => {
   let data = {
     status: req.body.status,
@@ -73,8 +73,8 @@ exports.updateAddress = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Delete user
-// @route     DELETE  /api/v1/categories/:id
-// @access    Private/Admin
+// @route     DELETE  /api/v1/address/:id
+// @access    Public
 exports.deleteAddress = asyncHandler(async (req, res, next) => {
   const address = await Address.findByIdAndDelete(req.params.id);
 
