@@ -49,7 +49,13 @@ exports.getAddress = asyncHandler(async (req, res, next) => {
 // @route     PATCH /api/v1/categories/:id
 // @access    Private/Admin
 exports.updateAddress = asyncHandler(async (req, res, next) => {
-  const address = await Address.findByIdAndUpdate(req.params.id, req.body, {
+  let data = {
+    status: req.body.status,
+    name: req.body.name,
+    email: req.body.email
+  };
+
+  const address = await Address.findByIdAndUpdate(req.params.id, data, {
     new: true,
     runValidators: true
   });

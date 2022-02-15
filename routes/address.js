@@ -8,12 +8,21 @@ const {
 } = require("../controllers/address");
 const router = express.Router();
 
+/**
+ **Access - Public
+ */
+
 router.route("/")
 .get(getAllAddress)
 .post(createAddress);
 
+
+/**
+ * *Access - Public
+ * *Requires {id}
+ */
 router.route("/:id")
-.put(updateAddress)
+.patch(updateAddress)
 .delete(deleteAddress)
 .get(getAddress);
 

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
-const AddressSchema = new mongoose.Schema({
+const ArticleSchema = new mongoose.Schema({
   country: {
     type: String,
     required: [true, "Please add a country"]
@@ -18,21 +19,17 @@ const AddressSchema = new mongoose.Schema({
 
   postalcode: {
     type: Number,
-    maxlength: 5,
     required: [true, "Please add a postalcode"]
   },
 
   number: {
     type: Number,
-    minlength: 0,
-    maxlength: 15,
     required: [true, "Please add a number"]
   },
 
   numberAddition: {
     type: String,
-    default: ""
-    // required: [true, "Please add a numberAddition"]
+    required: [true, "Please field cannot be empty"]
   },
 
   createdAt: {
@@ -47,27 +44,19 @@ const AddressSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    default: null,
-    trim: true,
-    // enum: {
-    //   values: ["not at home", "not interested", "interested"],
-    //   message: "Status must be  [not at home] [not interested] [ interested]"
-    // }
+    required: true
   },
 
   name: {
     type: String,
-    default: null
+    required: true
   },
 
   email: {
     type: String,
-    default: null,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please add a valid email"
-    ]
+    required: true
   }
+
 });
 
-module.exports = mongoose.model("Address", AddressSchema);
+module.exports = mongoose.model("Article", ArticleSchema);
