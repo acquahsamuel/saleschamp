@@ -1,4 +1,4 @@
-const ErrorResponse = require("../middleware/error");
+const ErrorResponse = require("./errorResponse");
 const asyncHandler = require("../middleware/async");
 const COUNTRY_LOOKUP = require("./countries");
 const AVAILABLE_STATUS = require("./constants");

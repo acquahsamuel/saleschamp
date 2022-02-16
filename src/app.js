@@ -1,7 +1,8 @@
 const os = require("os");
 const express = require("express");
 const errorHandler = require("./middleware/error");
-require("dotenv").config({ path: "config.env" });
+require("dotenv").config();
+
 /**
  * Connection db
  */
@@ -14,12 +15,12 @@ app.use(express.json());
 const address = require("./routes/address");
 
 /**
- * Address Mount
+ * Mount
  */
 app.use("/api/v1/address", address);
 app.use("/", (request, response) => {
   response.json({
-    message: `SalesChamp deployed -https://saleschampnlapi.herokuapp.com/api/v1/address`
+    message: `SalesChamp deployed - https://saleschampnlapi.herokuapp.com/api/v1/address`
   });
 });
 
