@@ -11,14 +11,11 @@ const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
 const errorHandler = require("./middleware/error");
 const mongoSanitize = require("express-mongo-sanitize");
+const connectDB = require("./config/db");
 const keys = require("./config/keys");
 
 // Mongodb connection
-mongoose.connect(keys.MONGO_URI, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  useCreateIndex: true
-});
+connectDB();
 
 const app = express();
 
