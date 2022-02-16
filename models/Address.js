@@ -66,4 +66,9 @@ const AddressSchema = new mongoose.Schema({
   }
 });
 
+
+AddressSchema.pre('save' ,function(){
+  
+})
+
 module.exports = mongoose.model("Address", AddressSchema);
