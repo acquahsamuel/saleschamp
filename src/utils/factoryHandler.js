@@ -4,8 +4,7 @@ const COUNTRY_LOOKUP = require("./countries");
 const AVAILABLE_STATUS = require("./constants");
 
 /**
- * @description     Get all Address
- * @route           GET /api/v1/address
+
  * @Request         GET
  * @Access          Public
  */
@@ -20,8 +19,6 @@ exports.getAll = Model =>
   });
 
 /**
- * @description     Create all Address
- * @route           POST /api/v1/address
  * @Request         POST
  * @Access          Public - payload
  */
@@ -58,8 +55,6 @@ exports.create = Model =>
   });
 
 /**
- * @description     Get single Address
- * @route           GET /api/v1/address/:id
  * @Request         GET
  * @Access          Public
  */
@@ -78,8 +73,6 @@ exports.getOne = Model =>
   });
 
 /**
- * @description     Update single Address
- * @route           PATCH /api/v1/address/:id
  * @Request         PATCH
  * @Access          Public
  */
@@ -105,7 +98,7 @@ exports.updateOne = Model =>
       return next(new ErrorResponse(`Status cannot be set`, 404));
     }
 
-    const temp = await Address.findByIdAndUpdate(req.params.id, data, {
+    const temp = await Model.findByIdAndUpdate(req.params.id, data, {
       new: true,
       runValidators: true
     });
