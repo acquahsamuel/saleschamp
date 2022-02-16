@@ -1,10 +1,14 @@
-### JSON 
+#### SalesChamp Documentation 
 
-## Getting help
-Kindly reach out to me @iamacquahsamuel@gmail.com
 
-## Getting involved
-General instructions on _how_ to contribute should be stated with a link to [CONTRIBUTING](CONTRIBUTING.md).
+#### Request Endpoints
 
-1. [TERMS](TERMS.md)
-2. [LICENSE](LICENSE)
+| Requests                   | URL Endpoint                                         |
+|----------------------------|------------------------------------------------------|
+| Get Create Address         | https://saleschampnlapi.herokuapp.com/api/v1/address |
+| Get a specific Address     | https://saleschampnlapi.herokuapp.com/api/v1/address |
+| Get all Address            | https://saleschampnlapi.herokuapp.com/api/v1/address |
+| Update  a specific Address | https://saleschampnlapi.herokuapp.com/api/v1/address |
+| Deleta a specific Addresss | https://saleschampnlapi.herokuapp.com/api/v1/address |
+
+

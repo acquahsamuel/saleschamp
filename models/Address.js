@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-// const countries = require("i18n-iso-countries");
-// console.log(countries);
+const AVAILABLE_STATUS = require("../utils/constants");
 
 const AddressSchema = new mongoose.Schema({
   country: {
@@ -34,7 +33,6 @@ const AddressSchema = new mongoose.Schema({
   numberAddition: {
     type: String,
     default: ""
-    // required: [true, "Please add a numberAddition"]
   },
 
   createdAt: {
@@ -51,10 +49,6 @@ const AddressSchema = new mongoose.Schema({
     type: String,
     default: null,
     trim: true
-    // enum: {
-    //   values: ["not at home", "not interested", "interested"],
-    //   message: "Status must be  [not at home] [not interested] [ interested]"
-    // }
   },
 
   name: {

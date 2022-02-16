@@ -1,53 +1,80 @@
-// const User = require('../models/User');
 const Address = require("../models/Address");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
+const COUNTRY_LOOKUP = require("../utils/countries");
+const AVAILABLE_STATUS = require("../utils/constants");
 
-// @desc      Get all categories
-// @route     GET /api/v1/categories
-// @access    Private/Admin
+/**
+ * @description     Get all Address
+ * @route           GET /api/v1/address
+ * @Request         GET
+ * @Access          Public
+ */
 exports.getAllAddress = asyncHandler(async (req, res, next) => {
-  // res.status(200).json(res.advancedResults);
   const address = await Address.find();
   res.status(200).json({
+    count: address.length,
     success: true,
     data: address
   });
 });
 
-// @desc      Create category
-// @route     GET /api/v1/address
-// @access    Public
+/**
+ * @description     Create all Address
+ * @route           POST /api/v1/address
+ * @Request         POST
+ * @Access          Public - payload
+ */
 exports.createAddress = asyncHandler(async (req, res, next) => {
-  const address = await Address.create(req.body);
+  /*validate country code */
+  if (!req.body.country) {
+    return next(new ErrorResponse("Country code cannot be null", 400));
+  }
 
+  /* validate street */
+  if (!req.body.street) {
+    return next(new ErrorResponse("Street cannot be null", 400));
+  }
+  if (!req.body.street) {
+    return next(new ErrorResponse("Street cannot be null", 400));
+  }
+  if (!COUNTRY_LOOKUP.has(req.body.country.toLowerCase())) {
+    return next(new ErrorResponse("Address code is invalid", 400));
+  }
+
+  /*Create request */
+  const address = await Address.create(req.body);
   res.status(201).json({
     success: true,
     data: address
   });
 });
 
-// @desc      Get single user
-// @route     GET /api/v1/address
-// @access    Public
+/**
+ * @description     Get single Address
+ * @route           GET /api/v1/address/:id
+ * @Request         GET
+ * @Access          Public
+ */
 exports.getAddress = asyncHandler(async (req, res, next) => {
   const address = await Address.findById(req.params.id);
-
   if (!address) {
     return next(
-      new ErrorResponse(`Category not found with id of ${req.params.id}`, 404)
+      new ErrorResponse(`Address not found with id of ${req.params.id}`, 404)
     );
   }
-
   res.status(200).json({
     success: true,
     data: address
   });
 });
 
-// @desc      Update user
-// @route     PATCH /api/v1/address/:id
-// @access   Public
+/**
+ * @description     Update single Address
+ * @route           PATCH /api/v1/address/:id
+ * @Request         PATCH
+ * @Access          Public
+ */
 exports.updateAddress = asyncHandler(async (req, res, next) => {
   let data = {
     status: req.body.status,
@@ -55,35 +82,44 @@ exports.updateAddress = asyncHandler(async (req, res, next) => {
     email: req.body.email
   };
 
-  const address = await Address.findByIdAndUpdate(req.params.id, data, {
+  const address = await Address.findById(req.params.id);
+  if (!address) {
+    return next(
+      new ErrorResponse(`Address not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  if (
+    address.status &&
+    address.status.toUpperCase() !== AVAILABLE_STATUS.NOT_AT_HOME
+  ) {
+    return next(new ErrorResponse(`Status cannot be set`, 404));
+  }
+
+  const temp = await Address.findByIdAndUpdate(req.params.id, data, {
     new: true,
     runValidators: true
   });
 
-  if (!address) {
-    return next(
-      new ErrorResponse(`Category not found with id of ${req.params.id}`, 404)
-    );
-  }
-
   res.status(200).json({
     success: true,
-    data: address
+    data: temp
   });
 });
 
-// @desc      Delete user
-// @route     DELETE  /api/v1/address/:id
-// @access    Public
+/**
+ * @description     DELETE single Address
+ * @route           DELETE /api/v1/address/:id
+ * @Request         Delete
+ * @Access          Public
+ */
 exports.deleteAddress = asyncHandler(async (req, res, next) => {
   const address = await Address.findByIdAndDelete(req.params.id);
-
   if (!address) {
     return next(
-      new ErrorResponse(`Category not found with id of ${req.params.id}`, 404)
+      new ErrorResponse(`Address not found with id of ${req.params.id}`, 404)
     );
   }
-
   res.status(200).json({
     success: true,
     data: {}

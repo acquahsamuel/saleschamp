@@ -5,24 +5,12 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const express = require("express");
+const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
 const errorHandler = require("./middleware/error");
 const mongoSanitize = require("express-mongo-sanitize");
-const mongoose = require("mongoose");
 const keys = require("./config/keys");
-
-//Database connection
-// connectDB();
-
-mongoose.connect(keys.MONGO_URI, {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true
-});
-
-// Route files in
-const address = require("./routes/address");
 
 const app = express();
 
@@ -36,7 +24,6 @@ app.use(cookieParser());
 if (keys.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-
 // Sanitize data
 app.use(mongoSanitize());
 
@@ -59,18 +46,34 @@ app.use(hpp());
 // Enable CORS
 app.use(cors());
 
+// Route files in
+const address = require("./routes/address");
+
 // Mount routers
 app.use("/api/v1/address", address);
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-const server = app.listen(
-  PORT,
-  console.log(`Server running on port ${PORT}`.yellow.underline)
-);
-
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Error: ${err.message}`.red);
 });
+
+const PORT = keys.PORT || 5000;
+
+mongoose
+  .connect(keys.MONGO_URI, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Connected to DB");
+    app.listen(
+      PORT,
+      console.log(`Server running on port ${PORT}`.yellow.underline)
+    );
+  })
+  .catch(err => {
+    console.log("Error", err);
+  });
