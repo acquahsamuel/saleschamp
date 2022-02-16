@@ -26,6 +26,15 @@ exports.getAllAddress = asyncHandler(async (req, res, next) => {
  * @Access          Public - payload
  */
 exports.createAddress = asyncHandler(async (req, res, next) => {
+  const createNewAddress = {
+    country: req.body.country,
+    city: req.body.city,
+    street: req.body.street,
+    postalcode: req.body.postalcode,
+    number: req.body.number,
+    numberAddition: req.body.numberAddition
+  };
+
   /*validate country code */
   if (!req.body.country) {
     return next(new ErrorResponse("Country code cannot be null", 400));
@@ -42,8 +51,7 @@ exports.createAddress = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Address code is invalid", 400));
   }
 
-  /*Create request */
-  const address = await Address.create(req.body);
+  const address = await Address.create(createNewAddress);
   res.status(201).json({
     success: true,
     data: address
