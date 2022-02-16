@@ -17,6 +17,11 @@ const address = require("./routes/address");
  * Address Mount
  */
 app.use("/api/v1/address", address);
+app.use("/", (request, response) => {
+  response.json({
+    message: `SalesChamp deployed -https://saleschampnlapi.herokuapp.com/api/v1/address`
+  });
+});
 
 /**
  * Error Handler
