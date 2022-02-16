@@ -14,6 +14,9 @@ const keys = require("./config/keys");
 
 const app = express();
 
+// Route files in
+const address = require("./routes/address");
+
 // Body parser
 app.use(express.json());
 
@@ -45,9 +48,6 @@ app.use(hpp());
 
 // Enable CORS
 app.use(cors());
-
-// Route files in
-const address = require("./routes/address");
 
 // Mount routers
 app.use("/api/v1/address", address);
