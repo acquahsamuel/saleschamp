@@ -19,7 +19,7 @@ router.route("/")
 
 /**
  * *Access - Public
- * *Requires {id}
+ * *Requires {id params}
  */
 router.route("/:id")
 .patch(updateAddress)
