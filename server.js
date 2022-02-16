@@ -1,3 +1,4 @@
+const os = require("os");
 const hpp = require("hpp");
 const cors = require("cors");
 const colors = require("colors");
@@ -12,13 +13,20 @@ const errorHandler = require("./middleware/error");
 const mongoSanitize = require("express-mongo-sanitize");
 const keys = require("./config/keys");
 
-const app = express();
+// Mongodb connection
+mongoose.connect(keys.MONGO_URI, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useCreateIndex: true
+});
 
-// Route files in
-const address = require("./routes/address");
+const app = express();
 
 // Body parser
 app.use(express.json());
+
+// Route files in
+const address = require("./routes/address");
 
 // Cookie parser
 app.use(cookieParser());
@@ -54,26 +62,21 @@ app.use("/api/v1/address", address);
 
 app.use(errorHandler);
 
-// Handle unhandled promise rejections
-process.on("unhandledRejection", (err, promise) => {
-  console.log(`Error: ${err.message}`.red);
+/**
+ * @description server config
+ */
+console.log(os.platform());
+console.log(os.version());
+const port = process.env.PORT || 5000;
+const server = app.listen(port, () => {
+  console.log(`Server started on port ${port}`.yellow.underline);
 });
 
-const PORT = keys.PORT || 5000;
-
-mongoose
-  .connect(keys.MONGO_URI, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log("Connected to DB");
-    app.listen(
-      PORT,
-      console.log(`Server running on port ${PORT}`.yellow.underline)
-    );
-  })
-  .catch(err => {
-    console.log("Error", err);
+// Handle unhandled Rejection
+process.on("unhandledRejection", err => {
+  console.log("UNHANDLED REJECTION Shutting down");
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
   });
+});

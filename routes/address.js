@@ -9,21 +9,18 @@ const {
 const router = express.Router();
 
 /**
- **Access - Public
+ * @description    Routes
+ * @access         Public
  */
 
-router.route("/")
-.get(getAllAddress)
-.post(createAddress);
-
+router.route("/").get(getAllAddress).post(createAddress);
 
 /**
- * *Access - Public
- * *Requires {id params}
+ * @descriptoin    Routes 
+ * @access         Public
+ * @requires      {"/:id"}    
  */
-router.route("/:id")
-.patch(updateAddress)
-.delete(deleteAddress)
-.get(getAddress);
+
+router.route("/:id").patch(updateAddress).delete(deleteAddress).get(getAddress);
 
 module.exports = router;

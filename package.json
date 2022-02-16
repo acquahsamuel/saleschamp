@@ -4,8 +4,9 @@
   "description": "Project startup for node.js",
   "main": "server.js",
   "scripts": {
-    "start": "NODE_ENV=production nodemon server",
-    "start:dev": "nodemon server"
+    "start:dev": "nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js",
+    "debug": "ndb server.js"
   },
   "keywords": [
     "voting",
