@@ -250,8 +250,9 @@ const countries = [
   { name: "Zambia", code: "ZM" },
   { name: "Zimbabwe", code: "ZW" }
 ];
-const COUNTRY_LOOKUP = new Set();
+
+const COUNTRY_LOOKUP = new Map();
 for (const data of countries) {
-  COUNTRY_LOOKUP.add(data.code.toLowerCase());
+  COUNTRY_LOOKUP.set(data.code.toLowerCase(), data.name);
 }
 module.exports = COUNTRY_LOOKUP;

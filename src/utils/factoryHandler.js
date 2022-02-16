@@ -24,7 +24,7 @@ exports.getAll = Model =>
  */
 exports.create = Model =>
   asyncHandler(async (req, res, next) => {
-    const createNewAddress = {
+    const createNew = {
       country: req.body.country,
       city: req.body.city,
       street: req.body.street,
@@ -33,12 +33,16 @@ exports.create = Model =>
       numberAddition: req.body.numberAddition
     };
 
-    /*validate country code */
+    /**
+     * Validate country
+     */
     if (!req.body.country) {
       return next(new ErrorResponse("Country code cannot be null", 400));
     }
 
-    /* validate street */
+    /**
+     * Validate street
+     */
     if (!req.body.street) {
       return next(new ErrorResponse("Street cannot be null", 400));
     }
@@ -47,7 +51,12 @@ exports.create = Model =>
       return next(new ErrorResponse("Address code is invalid", 400));
     }
 
-    const docs = await Model.create(createNewAddress);
+    /**
+     * Set Header in country
+     */
+    const country = COUNTRY_LOOKUP.get(req.body.country.toLowerCase());
+    res.setHeader("Country", country);
+    const docs = await Model.create(createNew);
     res.status(201).json({
       success: true,
       data: docs
@@ -63,7 +72,7 @@ exports.getOne = Model =>
     const docs = await Model.findById(req.params.id);
     if (!docs) {
       return next(
-        new ErrorResponse(`Address not found with id of ${req.params.id}`, 404)
+        new ErrorResponse(`Document not found with id of ${req.params.id}`, 404)
       );
     }
     res.status(200).json({
@@ -78,6 +87,9 @@ exports.getOne = Model =>
  */
 exports.updateOne = Model =>
   asyncHandler(async (req, res, next) => {
+    /**
+     * Body data
+     */
     let data = {
       status: req.body.status,
       name: req.body.name,
@@ -92,20 +104,37 @@ exports.updateOne = Model =>
     }
 
     if (
+      data.status.toUpperCase().trim().toString() !==
+        AVAILABLE_STATUS.INTERESTED.toString() &&
+      data.status.toUpperCase().trim().toString() !==
+        AVAILABLE_STATUS.NOT_INTERESTED.toString() &&
+      data.status.toUpperCase().trim().toString() !==
+        AVAILABLE_STATUS.NOT_AT_HOME.toString()
+    ) {
+      return next(
+        new ErrorResponse(
+          `Status is not valid. should be one of ${AVAILABLE_STATUS.NOT_AT_HOME}, 
+          ${AVAILABLE_STATUS.INTERESTED}, ${AVAILABLE_STATUS.NOT_INTERESTED} `,
+          404
+        )
+      );
+    }
+
+    if (
       address.status &&
       address.status.toUpperCase() !== AVAILABLE_STATUS.NOT_AT_HOME
     ) {
       return next(new ErrorResponse(`Status cannot be set`, 404));
     }
 
-    const temp = await Model.findByIdAndUpdate(req.params.id, data, {
+    const docs = await Model.findByIdAndUpdate(req.params.id, data, {
       new: true,
       runValidators: true
     });
 
     res.status(200).json({
       success: true,
-      data: temp
+      data: docs
     });
   });
 

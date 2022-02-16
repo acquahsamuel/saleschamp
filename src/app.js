@@ -19,6 +19,7 @@ const address = require("./routes/address");
  */
 app.use("/api/v1/address", address);
 app.use("/", (request, response) => {
+  response.setHeader("Content-Type", "application/json");
   response.json({
     message: `SalesChamp deployed - https://saleschampnlapi.herokuapp.com/api/v1/address`
   });
