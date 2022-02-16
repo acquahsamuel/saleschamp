@@ -3,12 +3,12 @@
 
 #### Request Endpoints
 
-| Requests                   | URL Endpoint                                         |
-|----------------------------|------------------------------------------------------|
-| Get Create Address         | https://saleschampnlapi.herokuapp.com/api/v1/address |
-| Get a specific Address     | https://saleschampnlapi.herokuapp.com/api/v1/address |
-| Get all Address            | https://saleschampnlapi.herokuapp.com/api/v1/address |
-| Update  a specific Address | https://saleschampnlapi.herokuapp.com/api/v1/address |
-| Deleta a specific Addresss | https://saleschampnlapi.herokuapp.com/api/v1/address |
+| Requests                   | URL Endpoint                                             | Method |
+|----------------------------|----------------------------------------------------------|--------|
+| Get Create Address         | https://saleschampnlapi.herokuapp.com/api/v1/address     | POST   |
+| Get all Address            | https://saleschampnlapi.herokuapp.com/api/v1/address     | GET    |
+| Get a specific Address     | https://saleschampnlapi.herokuapp.com/api/v1/address/:id | GET    |
+| Update  a specific Address | https://saleschampnlapi.herokuapp.com/api/v1/address/:id | PATCH  |
+| Deleta a specific Addresss | https://saleschampnlapi.herokuapp.com/api/v1/address/:id | DELETE |
 
 
