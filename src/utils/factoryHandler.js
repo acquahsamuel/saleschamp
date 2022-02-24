@@ -1,5 +1,5 @@
+const asyncHandler = require('express-async-handler');
 const ErrorResponse = require('./errorResponse');
-const asyncHandler = require('../middleware/async');
 const COUNTRY_LOOKUP = require('./countries');
 const AVAILABLE_STATUS = require('./constants');
 
@@ -26,9 +26,8 @@ exports.getAll = (Model) =>
  * @Access          Public
  */
 exports.create = (Model) =>
-  // eslint-disable-next-line consistent-return
   asyncHandler(async (req, res, next) => {
-    const createNew = {
+    const data = {
       country: req.body.country,
       city: req.body.city,
       street: req.body.street,
@@ -51,7 +50,7 @@ exports.create = (Model) =>
 
     const country = COUNTRY_LOOKUP.get(req.body.country.toLowerCase());
     res.setHeader('Country', country);
-    const docs = await Model.create(createNew);
+    const docs = await Model.create(data);
     res.status(201).json({
       success: true,
       data: docs,
@@ -65,7 +64,6 @@ exports.create = (Model) =>
  * @Access          Public
  */
 exports.getOne = (Model) =>
-  // eslint-disable-next-line consistent-return
   asyncHandler(async (req, res, next) => {
     const docs = await Model.findById(req.params.id);
     if (!docs) {
@@ -86,7 +84,6 @@ exports.getOne = (Model) =>
  * @Access          Public
  */
 exports.updateOne = (Model) =>
-  // eslint-disable-next-line consistent-return
   asyncHandler(async (req, res, next) => {
     const data = {
       status: req.body.status,
@@ -143,7 +140,6 @@ exports.updateOne = (Model) =>
  * @Access          Public
  */
 exports.deleteOne = (Model) =>
-  // eslint-disable-next-line consistent-return
   asyncHandler(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
     if (!doc) {

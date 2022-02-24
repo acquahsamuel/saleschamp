@@ -252,7 +252,6 @@ const countries = [
 ];
 
 const COUNTRY_LOOKUP = new Map();
-// eslint-disable-next-line no-restricted-syntax
 for (const data of countries) {
   COUNTRY_LOOKUP.set(data.code.toLowerCase(), data.name);
 }
