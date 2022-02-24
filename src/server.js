@@ -1,20 +1,11 @@
-const os = require("os");
-const app = require("./app");
-const colors = require("colors");
-const morgan = require("morgan");
-const connectDB = require("./config/db");
+require('colors');
+const app = require('./app');
+const connectDB = require('./config/db');
 
 /**
  * Connection mongoose db
  */
 connectDB();
-
-/**
- * Mongoose endpoint logger
- */
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
 
 /**
  *  Connect to port
@@ -27,8 +18,7 @@ const server = app.listen(port, () => {
 /**
  * Error Handler
  */
-process.on("unhandledRejection", err => {
-  console.log(os.platform() + "~" + os.version());
+process.on('unhandledRejection', (err) => {
   console.log(err.message);
   server.close(() => {
     process.exit(1);
