@@ -1,9 +1,5 @@
-const Address = require("../models/Address");
-const factory = require("../utils/factoryHandler");
-
-/**
- **Model used : Address
- */
+const Address = require('../models/addressModel');
+const factory = require('../utils/factoryHandler');
 
 /**
  * @description     Get all Address
