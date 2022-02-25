@@ -37,32 +37,27 @@ exports.create = (Model) =>
     };
 
     if (!data.country) {
-      return next(new ErrorResponse('Country code cannot be null', 400));
+      return next(new ErrorResponse('Country code cannot be null', 422));
     }
 
     if (!data.street) {
-      return next(new ErrorResponse('Street cannot be null', 400));
+      return next(new ErrorResponse('Street cannot be null', 422));
     }
 
-    // console.log(data.postalcode);
-
-    // if((data.postalcode.length == 5) && (Number(data.postalcode)) && (Number(data.postalcode) > 0)  && !(data.postalcode.toString().contains('.'))){
-    //   return next(new ErrorResponse('Postal code must be 5 and can only contain'))
-    // }
-
     if (!COUNTRY_LOOKUP.has(req.body.country.toLowerCase())) {
-      return next(new ErrorResponse('Address code is invalid', 400));
+      return next(new ErrorResponse('Address code is invalid', 422));
     }
 
     const country = COUNTRY_LOOKUP.get(req.body.country.toLowerCase());
     res.setHeader('Country', country);
     const docs = await Model.create(data);
-    res.status(201).json({
-      success: true,
-      data: docs,
-    });
+    res.status(201).json([
+      {
+        success: true,
+        data: docs,
+      },
+    ]);
   });
-
 
 /**
  * @description     DELETE single Address
@@ -75,13 +70,18 @@ exports.getOne = (Model) =>
     const docs = await Model.findById(req.params.id);
     if (!docs) {
       return next(
-        new ErrorResponse(`Document not found with id of ${req.params.id}`, 404)
+        new ErrorResponse(
+          `Document not found with id of ${req.params.id}`,
+          404,
+        ),
       );
     }
-    res.status(200).json({
-      success: true,
-      data: docs,
-    });
+    res.status(200).json([
+      {
+        success: true,
+        data: docs,
+      },
+    ]);
   });
 
 /**
@@ -98,33 +98,41 @@ exports.updateOne = (Model) =>
       email: req.body.email,
     };
 
-    const address = await Model.findById(req.params.id);
-    if (!address) {
+    const doc = await Model.findById(req.params.id);
+    if (!doc) {
       return next(
-        new ErrorResponse(`Document not found with id of ${req.params.id}`, 404)
+        new ErrorResponse(
+          `Document not found with id of ${req.params.id}`,
+          404,
+        ),
+      );
+    }
+
+    if(!data.status){
+      return next(
+        new ErrorResponse(
+          `Status cannot be empty`,
+          404,
+        ),
       );
     }
 
     if (
-      data.status.toUpperCase().trim().toString() !==
-        AVAILABLE_STATUS.INTERESTED.toString() &&
-      data.status.toUpperCase().trim().toString() !==
-        AVAILABLE_STATUS.NOT_INTERESTED.toString() &&
-      data.status.toUpperCase().trim().toString() !==
-        AVAILABLE_STATUS.NOT_AT_HOME.toString()
+      data.status.toUpperCase().trim().toString() !== AVAILABLE_STATUS.INTERESTED.toString()
+       &&  data.status.toUpperCase().trim().toString() !== AVAILABLE_STATUS.NOT_INTERESTED.toString() 
+       && data.status.toUpperCase().trim().toString() !==  AVAILABLE_STATUS.NOT_AT_HOME.toString()
     ) {
       return next(
         new ErrorResponse(
-          `Status is not valid. should be one of ${AVAILABLE_STATUS.NOT_AT_HOME}, 
-          ${AVAILABLE_STATUS.INTERESTED}, ${AVAILABLE_STATUS.NOT_INTERESTED} `,
-          404
-        )
+          `Status is not valid. should be one of ${AVAILABLE_STATUS.NOT_AT_HOME}, ${AVAILABLE_STATUS.INTERESTED}, ${AVAILABLE_STATUS.NOT_INTERESTED}`,
+          404,
+        ),
       );
     }
 
     if (
-      address.status &&
-      address.status.toUpperCase() !== AVAILABLE_STATUS.NOT_AT_HOME
+      doc.status &&
+      doc.status.toUpperCase() !== AVAILABLE_STATUS.NOT_AT_HOME
     ) {
       return next(new ErrorResponse(`Status cannot be set`, 404));
     }
@@ -134,10 +142,12 @@ exports.updateOne = (Model) =>
       runValidators: true,
     });
 
-    res.status(200).json({
-      success: true,
-      data: docs,
-    });
+    res.status(200).json([
+      {
+        success: true,
+        data: docs,
+      },
+    ]);
   });
 
 /**
@@ -151,7 +161,7 @@ exports.deleteOne = (Model) =>
     const doc = await Model.findByIdAndDelete(req.params.id);
     if (!doc) {
       return next(
-        new ErrorResponse(`No document found with id of ${req.params.id}`, 404)
+        new ErrorResponse(`No document found with id of ${req.params.id}`, 404),
       );
     }
     res.status(200).json({
