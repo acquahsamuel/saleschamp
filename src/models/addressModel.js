@@ -19,14 +19,16 @@ const AddressSchema = new mongoose.Schema(
 
     postalcode: {
       type: String,
-      maxlength: 5,
+      maxlength: [5, 'Maximum length of 5'],
       required: [true, 'Please add a postalcode'],
+      match: [/^[0-9]+$/, 'Postal code can only contain digits'],
     },
 
     number: {
       type: Number,
       minlength: 0,
       maxlength: 15,
+      match: [/^0|[1-9]\d*$/, 'Only number allowed'],
       required: [true, 'Please add a number'],
     },
 
@@ -55,7 +57,7 @@ const AddressSchema = new mongoose.Schema(
       ],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model('Address', AddressSchema);
