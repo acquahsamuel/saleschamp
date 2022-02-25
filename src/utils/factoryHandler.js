@@ -36,13 +36,19 @@ exports.create = (Model) =>
       numberAddition: req.body.numberAddition,
     };
 
-    if (!req.body.country) {
+    if (!data.country) {
       return next(new ErrorResponse('Country code cannot be null', 400));
     }
 
-    if (!req.body.street) {
+    if (!data.street) {
       return next(new ErrorResponse('Street cannot be null', 400));
     }
+
+    // console.log(data.postalcode);
+
+    // if((data.postalcode.length == 5) && (Number(data.postalcode)) && (Number(data.postalcode) > 0)  && !(data.postalcode.toString().contains('.'))){
+    //   return next(new ErrorResponse('Postal code must be 5 and can only contain'))
+    // }
 
     if (!COUNTRY_LOOKUP.has(req.body.country.toLowerCase())) {
       return next(new ErrorResponse('Address code is invalid', 400));
@@ -56,6 +62,7 @@ exports.create = (Model) =>
       data: docs,
     });
   });
+
 
 /**
  * @description     DELETE single Address
